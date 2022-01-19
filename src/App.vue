@@ -1,12 +1,20 @@
-<script setup lang="ts"></script>
-
 <template>
 	<img alt="Vue logo" src="./assets/logo.png" />
 	<HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-	<p>验证commit</p>
+	<button class="test" @click="test">验证请求</button>
+	<a-button type="primary"> Primary </a-button>
 </template>
 
-<style>
+<script setup lang="ts">
+import testApi from './api/modules/common';
+
+const test = () =>
+	testApi.test().then(res => {
+		console.log(res);
+	});
+</script>
+
+<style lang="scss">
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -14,5 +22,8 @@
 	text-align: center;
 	color: #2c3e50;
 	margin-top: 60px;
+}
+.test {
+	color: $test-color;
 }
 </style>

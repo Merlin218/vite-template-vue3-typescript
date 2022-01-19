@@ -12,6 +12,15 @@ module.exports = {
 	},
 	plugins: ['vue', '@typescript-eslint'],
 	rules: {
+		'no-console': process.env.NODE_ENV === 'development' ? 'off' : 'warn',
+		'no-debugger': process.env.NODE_ENV === 'development' ? 'off' : 'warn',
+		'no-alert': process.env.NODE_ENV === 'development' ? 'off' : 'warn',
+		'import/resolver': 'off',
+		'import/extensions': 'off',
+		'import/no-unresolved': 'off',
+		'no-unused-expressions': 'off',
+		'no-param-reassign': 'off',
 		'prettier/prettier': 'error',
+		'import/prefer-default-export': 'off',
 	},
 };
