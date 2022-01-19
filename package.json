@@ -1,6 +1,6 @@
 {
-	"name": "vite_vue3_ts",
-	"version": "0.0.0",
+	"name": "vite-template-vue3-ts",
+	"version": "0.0.1",
 	"scripts": {
 		"dev": "npm run prettier && npm run lint && vite",
 		"build": "npm run prettier && npm run lint && vue-tsc --noEmit && vite build",
