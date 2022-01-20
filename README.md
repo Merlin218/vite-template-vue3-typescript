@@ -43,7 +43,7 @@ pnpm build
 
 ### 结构树
 
-```json
+```bash
 ├── src
 │   ├── App.vue  // 根组件
 │   ├── api  // 请求api
