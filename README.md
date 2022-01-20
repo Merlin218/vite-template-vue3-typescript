@@ -33,6 +33,7 @@ pnpm build
 ```
 
 - 基于`unplugin-vue-components`实现组件自动导入，同时 vite 提供了原生的按需加载
+
   ```vue
   <template>
   	// 无需导入直接使用
