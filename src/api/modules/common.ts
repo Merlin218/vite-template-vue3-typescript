@@ -8,7 +8,7 @@ const testApi = {
 			params: {
 				count: 10,
 				urls: true,
-				httpsUrls: true,
+				httpsUrls: false,
 			},
 		}),
 };

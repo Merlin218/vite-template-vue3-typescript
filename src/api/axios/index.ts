@@ -1,6 +1,10 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { message } from 'ant-design-vue';
+import { MessageType } from 'ant-design-vue/lib/message';
 import { CustomConfig } from '../../types/common';
 import cancel from '../../api/axios/cancel';
+
+let hideGlobalMessage: MessageType;
 
 const request = (AxiosConfig: AxiosRequestConfig, customConfig: CustomConfig) => {
 	// 设置请求头和请求路径
@@ -15,15 +19,20 @@ const request = (AxiosConfig: AxiosRequestConfig, customConfig: CustomConfig) =>
 		repeatRequestCancel: true, // 取消重复请求，默认为true
 		loading: true, // 是否开启loading层效果, 默认为true
 		dataFormat: true, // 是否开启简洁的数据结构响应, 默认为true
+		useMsgFromEnd: true, // 是否使用后端返回的响应信息
 		loadingTitle: '加载中', // loading提示
-
-		...customConfig,
+		successTitle: '请求成功', // success提示
+		errorTitle: '请求失败', // error提示
+		...customConfig, // 合并配置
 	};
 
 	// 请求拦截
 	instance.interceptors.request.use(
 		(config): AxiosRequestConfig<any> => {
 			customConfigs.repeatRequestCancel && cancel.removePendingRequest(config); // 检查是否存在重复请求，若存在则取消已发的请求
+
+			customConfigs.loading && (hideGlobalMessage = message.loading(customConfigs.loadingTitle, 0));
+
 			customConfigs.repeatRequestCancel && cancel.addPendingRequest(config); // 把当前请求信息添加到pendingRequest对象中
 			const token = window.sessionStorage.getItem('token');
 			if (token) {
@@ -41,20 +50,33 @@ const request = (AxiosConfig: AxiosRequestConfig, customConfig: CustomConfig) =>
 	instance.interceptors.response.use(
 		(res: AxiosResponse) => {
 			customConfigs.repeatRequestCancel && cancel.removePendingRequest(res.config); // 从pendingRequest对象中移除请求
+			console.log(res);
+
 			if (res.data.code === 401) {
 				sessionStorage.setItem('token', '');
 				// token过期操作
 			}
-			return customConfig.dataFormat ? res.data : res;
+			// 更新loading
+			customConfigs.loading && hideGlobalMessage();
+			message.success({
+				content: customConfigs.useMsgFromEnd && res.data.msg ? res.data.msg : customConfigs.successTitle,
+				duration: 2,
+			});
+			return customConfigs.dataFormat ? res.data : res;
 		},
-		error => {
-			customConfigs.repeatRequestCancel && cancel.removePendingRequest(error.config || {}); // 从pendingRequest对象中移除请求
-			if (axios.isCancel(error)) {
-				console.log(`已取消的重复请求：${error.message}`);
+		err => {
+			customConfigs.repeatRequestCancel && cancel.removePendingRequest(err.config || {}); // 从pendingRequest对象中移除请求
+			if (axios.isCancel(err)) {
+				console.log(`已取消的重复请求:${err.message}`);
 			} else {
-				// 添加异常处理
+				// 更新loading
+				customConfigs.loading && hideGlobalMessage();
+				message.error({
+					content: customConfigs.useMsgFromEnd && err.data.msg ? err.data.msg : customConfigs.errorTitle,
+					duration: 2,
+				});
 			}
-			return Promise.reject(error);
+			return Promise.reject(err);
 		}
 	);
 	return instance(AxiosConfig);

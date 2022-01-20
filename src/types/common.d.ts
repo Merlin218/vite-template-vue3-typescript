@@ -7,7 +7,9 @@ export type responseType = {
 export type CustomConfig = {
 	repeatRequestCancel?: boolean; // 取消重复请求，默认为true
 	loading?: boolean; // 是否开启loading层效果, 默认为true
+	useMsgFromEnd?: boolean; // 是否使用后端返回的响应信息
 	dataFormat?: boolean; // 是否开启简洁的数据结构响应, 默认为true
-	codeMessageShow?: boolean; // 是否开启respond中code不为0时的信息提示, 默认为false
-	loadingTitle?: string;
+	loadingTitle?: string; // loading提示
+	successTitle?: string; // success提示
+	errorTitle?: string; // error提示
 };

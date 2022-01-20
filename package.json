@@ -2,8 +2,8 @@
 	"name": "vite-template-vue3-ts",
 	"version": "0.0.0",
 	"scripts": {
-		"dev": "pnpm prettier && pnpm lint:development && vite",
-		"build": "pnpm prettier && pnpm lint:production && vue-tsc --noEmit && vite build",
+		"dev": "pnpm prettier && pnpm lint:development && vite --host --mode development",
+		"build": "pnpm prettier && pnpm lint:production && vue-tsc --noEmit && vite build --mode production",
 		"preview": "vite preview",
 		"lint:development": "cross-env NODE_ENV=development eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
 		"lint:production": "cross-env NODE_ENV=production eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
@@ -36,6 +36,7 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-vue": "^8.3.0",
 		"husky": "^7.0.4",
+		"less": "^4.1.2",
 		"lint-staged": "^12.2.0",
 		"mrm": "^3.0.10",
 		"prettier": "^2.5.1",
@@ -43,6 +44,7 @@
 		"typescript": "^4.4.4",
 		"unplugin-vue-components": "^0.17.13",
 		"vite": "^2.7.2",
+		"vite-plugin-style-import": "^1.4.1",
 		"vue-tsc": "^0.29.8"
 	},
 	"lint-staged": {
